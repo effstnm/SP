@@ -1,0 +1,51 @@
+#!/bin/bash
+ echo "Автор: Сухоплюева Ольга 739-1. Архиватор."
+while true; do
+  echo "Выберите действие: a - aрхивировать, р - распаковать, v - выход"
+  read -n1 action
+  echo ""
+
+  if [[ $action == "v" ]]; then
+    exit 0
+  fi
+
+  if [[ $action != "a" && $action != "p" ]]; then
+    echo "Ошибка: неверный ввод"
+    continue
+  fi
+
+  if [[ $action == "a" ]]; then
+    echo "Введите путь к каталогу для архивации:"
+    read dir_path
+
+    if [[ ! -d $dir_path ]]; then
+      echo "Ошибка: каталог не существует"
+      continue
+    fi
+
+    echo "Введите имя архива:"
+    read archive_name
+
+    tar -czf "$archive_name" "$dir_path"
+    echo "Архив $archive_name создан"
+  else
+    echo "Введите имя файла с архивом:"
+    read archive_name
+
+    if [[ ! -f $archive_name ]]; then
+      echo "Ошибка: файл не существует"
+      continue
+    fi
+
+    tar -xzf "$archive_name"
+    echo "Архив $archive_name распакован"
+  fi
+
+  echo "Хотите выполнить ещё одно действие? y - да, n - нет"
+  read -n1 answer
+  echo ""
+
+  if [[ $answer == "n" ]]; then
+    exit 0
+  fi
+done
